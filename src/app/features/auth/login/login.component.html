@@ -1,0 +1,45 @@
+<div class="login-container">
+  <div class="login-card">
+    <h1>MyBuddy</h1>
+    <p class="subtitle">Sign in to your account</p>
+    
+    @if (errorMessage) {
+      <div class="error-message">{{ errorMessage }}</div>
+    }
+    
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          id="email" 
+          type="email" 
+          formControlName="email" 
+          placeholder="employee&#64;mybuddy.com"
+        />
+        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+          <span class="error">Valid email is required</span>
+        }
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          id="password" 
+          type="password" 
+          formControlName="password" 
+          placeholder="1234"
+        />
+        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+          <span class="error">Password is required</span>
+        }
+      </div>
+      
+      <button type="submit" [disabled]="loginForm.invalid">Login</button>
+    </form>
+    
+    <div class="credentials">
+      <p><strong>Employee:</strong> employee&#64;mybuddy.com / 1234</p>
+      <p><strong>Admin:</strong> admin&#64;mybuddy.com / 1234</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="sidebar">
+  <div class="logo">
+    <h2>MyBuddy</h2>
+  </div>
+  <nav class="nav-menu">
+    <a routerLink="/dashboard" routerLinkActive="active">Home</a>
+    <a routerLink="/saved" routerLinkActive="active">Saved Forms</a>
+    @if (isAdmin) {
+      <a routerLink="/admin" routerLinkActive="active">Admin</a>
+    }
+  </nav>
+</div>
