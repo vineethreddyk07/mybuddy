@@ -1,134 +1,132 @@
 <div class="dashboard">
+
+  <!-- LEFT SIDE FORM -->
   <div class="form-section">
-    <h2>New Claim Form</h2>
-    
+    <h2>New Claim</h2>
+
     <form [formGroup]="claimForm">
+
+      <!-- Pre Process -->
       <div class="card">
-        <h3>Basic Details</h3>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="patientName">Patient Name *</label>
-            <input id="patientName" type="text" formControlName="patientName" />
-          </div>
-          <div class="form-group">
-            <label for="claimId">Claim ID *</label>
-            <input id="claimId" type="text" formControlName="claimId" />
-          </div>
-        </div>
-        
-        <div class="form-row">
-          <div class="form-group">
-            <label for="payer">Payer *</label>
-            <select id="payer" formControlName="payer">
-              <option value="">Select Payer</option>
-              @for (payer of payerOptions; track payer) {
-                <option [value]="payer">{{ payer }}</option>
-              }
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="callDate">Call Date *</label>
-            <input id="callDate" type="date" formControlName="callDate" />
-          </div>
-        </div>
+        <h3>Pre-Process</h3>
+
+        <input placeholder="Patient Name" formControlName="patientName" />
+        <input placeholder="Claim ID" formControlName="claimId" />
+
+        <select formControlName="payer">
+          <option value="">Select Payer</option>
+          @for (payer of payerOptions; track payer) {
+            <option [value]="payer">{{ payer }}</option>
+          }
+        </select>
+
+        <input type="date" formControlName="callDate" />
+        <input placeholder="DOS" formControlName="dos" />
+        <input placeholder="Billed Amount" formControlName="billedAmount" />
+
+        <textarea placeholder="Previous History" formControlName="previousHistory"></textarea>
       </div>
 
+      <!-- On Process -->
       <div class="card">
-        <h3>Claim Status *</h3>
-        <div class="form-group">
-          <select formControlName="status">
-            <option value="">Select Status</option>
-            @for (status of claimStatuses; track status) {
-              <option [value]="status">{{ status }}</option>
+        <h3>On-Process</h3>
+
+        <input placeholder="Rep Name" formControlName="repName" />
+        <input placeholder="Call Ref Number" formControlName="callRefNumber" />
+
+        <select formControlName="status">
+          <option value="">Select Status</option>
+          @for (status of claimStatuses; track status) {
+            <option [value]="status">{{ status }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Paid -->
+      @if (status === 'Paid') {
+        <div class="card">
+          <h3>Paid Details</h3>
+
+          <input type="number" placeholder="Paid Amount" formControlName="paidAmount" />
+          <input type="number" placeholder="Allowed Amount" formControlName="allowedAmount" />
+          <input type="number" placeholder="Patient Responsibility" formControlName="patientResponsibility" />
+          <input type="date" formControlName="paymentDate" />
+          <input placeholder="Reference" formControlName="paymentReference" />
+        </div>
+      }
+
+      <!-- Denied -->
+      @if (status === 'Denied') {
+        <div class="card">
+          <h3>Denied</h3>
+
+          <select formControlName="denialReason">
+            <option value="">Select</option>
+            @for (r of denialReasons; track r) {
+              <option [value]="r">{{ r }}</option>
             }
           </select>
-        </div>
-      </div>
 
-      @if (status === 'Paid') {
-        <div class="card conditional-section">
-          <h3>Paid Details</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="paidAmount">Paid Amount</label>
-              <input id="paidAmount" type="number" formControlName="paidAmount" />
-            </div>
-            <div class="form-group">
-              <label for="paymentDate">Payment Date</label>
-              <input id="paymentDate" type="date" formControlName="paymentDate" />
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="paymentReference">Payment Reference</label>
-            <input id="paymentReference" type="text" formControlName="paymentReference" />
-          </div>
+          <select formControlName="appealAllowed">
+            <option value="">Appeal?</option>
+            <option>Yes</option>
+            <option>No</option>
+          </select>
         </div>
       }
 
-      @if (status === 'Denied') {
-        <div class="card conditional-section">
-          <h3>Denial Details</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="denialReason">Denial Reason</label>
-              <select id="denialReason" formControlName="denialReason">
-                <option value="">Select Reason</option>
-                @for (reason of denialReasons; track reason) {
-                  <option [value]="reason">{{ reason }}</option>
-                }
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="appealAllowed">Appeal Allowed</label>
-              <select id="appealAllowed" formControlName="appealAllowed">
-                <option value="">Select</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="referenceNumber">Reference Number</label>
-            <input id="referenceNumber" type="text" formControlName="referenceNumber" />
-          </div>
-        </div>
-      }
-
+      <!-- Partial -->
       @if (status === 'Partial') {
-        <div class="card conditional-section">
-          <h3>Partial Payment Details</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="paidAmountPartial">Paid Amount</label>
-              <input id="paidAmountPartial" type="number" formControlName="paidAmount" />
-            </div>
-            <div class="form-group">
-              <label for="remainingAmount">Remaining Amount</label>
-              <input id="remainingAmount" type="number" formControlName="remainingAmount" />
-            </div>
-          </div>
+        <div class="card">
+          <h3>Partial</h3>
+
+          <input type="number" placeholder="Paid Amount" formControlName="paidAmount" />
+          <input type="number" placeholder="Remaining" formControlName="remainingAmount" />
         </div>
       }
 
+      <!-- Notes -->
       <div class="card">
         <h3>Notes</h3>
-        <div class="form-group">
-          <textarea formControlName="notes" rows="4" placeholder="Add any notes here..."></textarea>
-        </div>
+        <textarea formControlName="notes"></textarea>
       </div>
+
     </form>
 
     <div class="actions">
-      <button class="btn-secondary" (click)="saveDraft()">Save Draft</button>
-      <button class="btn-primary" (click)="submit()">Submit</button>
+      <button (click)="saveDraft()">Save Draft</button>
+      <button (click)="submit()">Submit</button>
     </div>
   </div>
 
+  <!-- RIGHT SIDE -->
   <div class="preview-section">
+
+    <!-- Structured -->
     <div class="card">
-      <h3>Live Report Preview</h3>
-      <pre class="report">{{ generateReport() }}</pre>
-      <button class="btn-copy" (click)="copyReport()">Copy Report</button>
+      <h3>Structured Report</h3>
+      <pre>{{ generateReport() }}</pre>
+      <button (click)="copyReport()">Copy</button>
     </div>
+
+    <!-- Paragraph -->
+    <div class="card paragraph">
+      <h3>Paragraph Report</h3>
+      <p>{{ generateParagraphReport() }}</p>
+      <button (click)="copyParagraph()">Copy</button>
+    </div>
+            @if (status) {
+        <div class="card instructions">
+          <h3>Instructions</h3>
+
+          <ul>
+            @for (item of getInstructions(); track item) {
+            <li>{{ item }}</li>
+            }
+          </ul>
+        </div>
+        }
+
   </div>
+
 </div>
