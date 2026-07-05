@@ -1,0 +1,81 @@
+<div class="container-fluid px-4">
+  <app-page-header title="Claim Details" [subtitle]="'Claim ' + (claimId || '')"></app-page-header>
+
+  <div *ngIf="claim; else noClaim">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card shadow-sm mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Claim Information</h5>
+          </div>
+          <div class="card-body">
+            <table class="table table-borderless mb-0">
+              <tr>
+                <th class="w-50">Claim ID</th>
+                <td>{{claim.claimId}}</td>
+              </tr>
+              <tr>
+                <th>Patient Name</th>
+                <td>{{claim.patientName}}</td>
+              </tr>
+              <tr>
+                <th>Payer</th>
+                <td>{{claim.payer}}</td>
+              </tr>
+              <tr>
+                <th>Scenario</th>
+                <td>{{claim.scenario}}</td>
+              </tr>
+              <tr>
+                <th>Status</th>
+                <td><span class="badge bg-{{getStatusColor(claim.status)}}">{{claim.status}}</span></td>
+              </tr>
+              <tr>
+                <th>Date</th>
+                <td>{{claim.date}}</td>
+              </tr>
+              <tr>
+                <th>Amount</th>
+                <td>{{claim.amount}}</td>
+              </tr>
+              <tr>
+                <th>Assigned To</th>
+                <td>{{claim.assignedTo}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="card shadow-sm mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Notes</h5>
+          </div>
+          <div class="card-body">
+            <p class="mb-0">{{claim.notes}}</p>
+          </div>
+        </div>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <button type="button" class="btn btn-outline-primary" [routerLink]="['/user/claims', claim.id, 'edit']">
+            <i class="bi bi-pencil me-1"></i> Edit Claim
+          </button>
+          <button type="button" class="btn btn-outline-secondary" (click)="goBack()">
+            <i class="bi bi-arrow-left me-1"></i> Back to Claims
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noClaim>
+    <div class="card shadow-sm">
+      <div class="card-body text-center py-5">
+        <i class="bi bi-exclamation-triangle display-4 text-muted mb-3"></i>
+        <h5 class="text-muted">Claim not found</h5>
+        <button type="button" class="btn btn-primary mt-3" (click)="goBack()">Back to Claims</button>
+      </div>
+    </div>
+  </ng-template>
+</div>

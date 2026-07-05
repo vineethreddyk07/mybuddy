@@ -1,0 +1,186 @@
+<div class="container-fluid px-4">
+  <app-page-header title="Settings" subtitle="Manage application settings and preferences"></app-page-header>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header">
+          <h5 class="mb-0">General Settings</h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSave()">
+            <!-- General Settings -->
+            <div class="mb-4">
+              <h6 class="mb-3">Company Information</h6>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="companyName" class="form-label">Company Name</label>
+                  <input type="text" class="form-control" id="companyName" [(ngModel)]="settingsForm.companyName" name="companyName">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="timezone" class="form-label">Timezone</label>
+                  <select class="form-select" id="timezone" [(ngModel)]="settingsForm.timezone" name="timezone">
+                    <option *ngFor="let tz of timezones" [value]="tz">{{tz}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="dateFormat" class="form-label">Date Format</label>
+                  <select class="form-select" id="dateFormat" [(ngModel)]="settingsForm.dateFormat" name="dateFormat">
+                    <option *ngFor="let df of dateFormats" [value]="df">{{df}}</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="timeFormat" class="form-label">Time Format</label>
+                  <select class="form-select" id="timeFormat" [(ngModel)]="settingsForm.timeFormat" name="timeFormat">
+                    <option *ngFor="let tf of timeFormats" [value]="tf">{{tf}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notification Settings -->
+            <div class="mb-4">
+              <h6 class="mb-3">Notification Settings</h6>
+              <div class="form-check mb-2">
+                <input type="checkbox" class="form-check-input" id="emailNotifications" [(ngModel)]="settingsForm.emailNotifications" name="emailNotifications">
+                <label class="form-check-label" for="emailNotifications">Email Notifications</label>
+              </div>
+              <div class="form-check mb-2">
+                <input type="checkbox" class="form-check-input" id="smsNotifications" [(ngModel)]="settingsForm.smsNotifications" name="smsNotifications">
+                <label class="form-check-label" for="smsNotifications">SMS Notifications</label>
+              </div>
+              <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="pushNotifications" [(ngModel)]="settingsForm.pushNotifications" name="pushNotifications">
+                <label class="form-check-label" for="pushNotifications">Push Notifications</label>
+              </div>
+              <div class="mb-3">
+                <label for="notificationFrequency" class="form-label">Notification Frequency</label>
+                <select class="form-select" id="notificationFrequency" [(ngModel)]="settingsForm.notificationFrequency" name="notificationFrequency">
+                  <option *ngFor="let freq of notificationFrequencies" [value]="freq">{{freq}}</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Security Settings -->
+            <div class="mb-4">
+              <h6 class="mb-3">Security Settings</h6>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="passwordExpirationDays" class="form-label">Password Expiration (days)</label>
+                  <input type="number" class="form-control" id="passwordExpirationDays" [(ngModel)]="settingsForm.passwordExpirationDays" name="passwordExpirationDays" min="0">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="maxLoginAttempts" class="form-label">Max Login Attempts</label>
+                  <input type="number" class="form-control" id="maxLoginAttempts" [(ngModel)]="settingsForm.maxLoginAttempts" name="maxLoginAttempts" min="1" max="10">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="sessionTimeoutMinutes" class="form-label">Session Timeout (minutes)</label>
+                  <input type="number" class="form-control" id="sessionTimeoutMinutes" [(ngModel)]="settingsForm.sessionTimeoutMinutes" name="sessionTimeoutMinutes" min="1" max="480">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div class="form-check mb-3">
+                    <input type="checkbox" class="form-check-input" id="requireMFA" [(ngModel)]="settingsForm.requireMFA" name="requireMFA">
+                    <label class="form-check-label" for="requireMFA">
+                      Require Multi-Factor Authentication
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- System Settings -->
+            <div class="mb-4">
+              <h6 class="mb-3">System Settings</h6>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="backupFrequency" class="form-label">Backup Frequency</label>
+                  <select class="form-select" id="backupFrequency" [(ngModel)]="settingsForm.backupFrequency" name="backupFrequency">
+                    <option value="">Select Frequency</option>
+                    <option *ngFor="let freq of backupFrequencies" [value]="freq">{{freq}}</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="maxFileSizeMB" class="form-label">Max File Size (MB)</label>
+                  <input type="number" class="form-control" id="maxFileSizeMB" [(ngModel)]="settingsForm.maxFileSizeMB" name="maxFileSizeMB" min="1" max="100">
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="allowedFileTypes" class="form-label">Allowed File Types</label>
+                <div class="form-control">
+                  {{getFileTypesDisplay()}}
+                </div>
+                <div class="form-text">
+                  Common types: pdf, doc, docx, xls, xlsx, jpg, png
+                </div>
+              </div>
+              <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="enableAuditLog" [(ngModel)]="settingsForm.enableAuditLog" name="enableAuditLog">
+                <label class="form-check-label" for="enableAuditLog">
+                  Enable Audit Log
+                </label>
+              </div>
+            </div>
+
+            <div class="d-grid mt-4">
+              <button type="button" class="btn btn-outline-secondary" (click)="onReset()">
+                Reset to Defaults
+              </button>
+              <button type="submit" class="btn btn-primary">
+                Save Settings
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Preview (optional) -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-header">
+          <h5 class="mb-0">Preview</h5>
+        </div>
+        <div class="card-body p-3">
+          <div class="text-center">
+            <h6>Settings Preview</h6>
+            <div class="mb-3">
+              <p class="mb-1"><strong>Company:</strong> {{ settingsForm.companyName || 'Not set' }}</p>
+              <p class="mb-1"><strong>Timezone:</strong> {{ settingsForm.timezone || 'Not set' }}</p>
+              <p class="mb-1"><strong>Date Format:</strong> {{ settingsForm.dateFormat || 'Not set' }}</p>
+              <p class="mb-1"><strong>Time Format:</strong> {{ settingsForm.timeFormat || 'Not set' }}</p>
+            </div>
+            <div class="mb-3">
+              <p class="mb-1"><strong>Notifications:</strong></p>
+              <div class="d-flex flex-wrap gap-2">
+                <span class="badge bg-{{ settingsForm.emailNotifications ? 'success' : 'secondary' }} me-1">
+                  Email: {{ settingsForm.emailNotifications ? 'On' : 'Off' }}
+                </span>
+                <span class="badge bg-{{ settingsForm.smsNotifications ? 'success' : 'secondary' }} me-1">
+                  SMS: {{ settingsForm.smsNotifications ? 'On' : 'Off' }}
+                </span>
+                <span class="badge bg-{{ settingsForm.pushNotifications ? 'success' : 'secondary' }} me-1">
+                  Push: {{ settingsForm.pushNotifications ? 'On' : 'Off' }}
+                </span>
+              </div>
+            </div>
+            <div class="mb-3">
+              <p class="mb-1"><strong>Security:</strong></p>
+              <div>
+                <span class="badge bg-{{ settingsForm.passwordExpirationDays > 0 ? 'info' : 'secondary' }} me-1">
+                  Password Expires: {{ settingsForm.passwordExpirationDays }} days
+                </span>
+                <span class="badge bg-{{ settingsForm.requireMFA ? 'warning' : 'info' }} me-1">
+                  MFA: {{ settingsForm.requireMFA ? 'Required' : 'Optional' }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

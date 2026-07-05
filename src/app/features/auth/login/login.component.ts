@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -12,12 +11,12 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit {
-  errorMessage = '';
   loginForm: any;
+  errorMessage = '';
+  isLoading = false;
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
     private router: Router
   ) {}
 
@@ -30,12 +29,22 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
-      if (this.authService.login(email, password)) {
-        this.router.navigate(['/dashboard']);
-      } else {
-        this.errorMessage = 'Invalid email or password';
-      }
+      this.isLoading = true;
+      // Mock login delay
+      setTimeout(() => {
+        const { email, password } = this.loginForm.value;
+        // Mock credentials - in a real app, we would call an auth service
+        if (email === 'admin@mybuddy.com' && password === 'admin123') {
+          // Mock successful login
+          // In a real app, we would store token/user info
+          this.router.navigate(['/admin/dashboard']);
+        } else if (email === 'user@mybuddy.com' && password === 'user123') {
+          this.router.navigate(['/user/dashboard']);
+        } else {
+          this.errorMessage = 'Invalid email or password';
+        }
+        this.isLoading = false;
+      }, 1000);
     }
   }
 }

@@ -1,45 +1,87 @@
-<div class="login-container">
-  <div class="login-card">
-    <h1>MyBuddy</h1>
-    <p class="subtitle">Sign in to your account</p>
-    
-    @if (errorMessage) {
-      <div class="error-message">{{ errorMessage }}</div>
-    }
-    
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input 
-          id="email" 
-          type="email" 
-          formControlName="email" 
-          placeholder="employee&#64;mybuddy.com"
-        />
-        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
-          <span class="error">Valid email is required</span>
-        }
+<div class="login-page d-flex">
+  <!-- Left Side - Branding -->
+  <div class="login-brand d-none d-lg-flex flex-column justify-content-center align-items-center text-white p-5">
+    <div class="text-center">
+      <div class="mb-4">
+        <i class="bi bi-shield-check display-1"></i>
       </div>
-      
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input 
-          id="password" 
-          type="password" 
-          formControlName="password" 
-          placeholder="1234"
-        />
-        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-          <span class="error">Password is required</span>
-        }
+      <h1 class="display-5 fw-bold mb-3">MyBuddy</h1>
+      <p class="lead mb-4 opacity-75">Professional Claims Management System</p>
+      <div class="d-flex justify-content-center gap-4 mt-4">
+        <div class="text-center">
+          <i class="bi bi-folder2-open fs-2 mb-2"></i>
+          <p class="mb-0 small opacity-75">Claims</p>
+        </div>
+        <div class="text-center">
+          <i class="bi bi-people fs-2 mb-2"></i>
+          <p class="mb-0 small opacity-75">Teams</p>
+        </div>
+        <div class="text-center">
+          <i class="bi bi-graph-up fs-2 mb-2"></i>
+          <p class="mb-0 small opacity-75">Analytics</p>
+        </div>
       </div>
-      
-      <button type="submit" [disabled]="loginForm.invalid">Login</button>
-    </form>
-    
-    <div class="credentials">
-      <p><strong>Employee:</strong> employee&#64;mybuddy.com / 1234</p>
-      <p><strong>Admin:</strong> admin&#64;mybuddy.com / 1234</p>
+    </div>
+  </div>
+
+  <!-- Right Side - Login Form -->
+  <div class="login-form flex-grow-1 d-flex align-items-center justify-content-center p-4">
+    <div class="w-100 login-form-wrapper">
+      <div class="text-center mb-4 d-lg-none">
+        <h2 class="fw-bold brand-title">MyBuddy</h2>
+        <p class="text-muted">Sign in to your account</p>
+      </div>
+
+      <div class="card border-0 shadow-lg login-card">
+        <div class="card-body p-4">
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="mb-4">
+              <label for="email" class="form-label fw-medium">Email address</label>
+              <div class="input-group login-input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-envelope text-muted"></i>
+                </span>
+                <input type="email" class="form-control" id="email" formControlName="email" placeholder="name@company.com">
+              </div>
+              <div class="invalid-feedback d-block mt-1 login-feedback" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
+                Please enter a valid email address.
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label for="password" class="form-label fw-medium">Password</label>
+              <div class="input-group login-input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-lock text-muted"></i>
+                </span>
+                <input type="password" class="form-control" id="password" formControlName="password" placeholder="Enter your password">
+              </div>
+              <div class="invalid-feedback d-block mt-1 login-feedback" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+                Please enter your password.
+              </div>
+            </div>
+
+            <div class="d-grid gap-2 mb-3">
+              <button type="submit" class="btn btn-primary py-2 fw-medium" [disabled]="loginForm.pending || isLoading">
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+                Sign In
+              </button>
+            </div>
+          </form>
+
+          <div class="text-center">
+            <p class="text-danger small mb-2" *ngIf="errorMessage">{{errorMessage}}</p>
+            <a routerLink="/forgot-password" class="text-muted text-decoration-none small">Forgot password?</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-4 d-lg-none">
+        <p class="small text-muted mb-0">Demo credentials:</p>
+        <div class="login-code">
+          Admin: admin&#64;mybuddy.com / admin123
+        </div>
+      </div>
     </div>
   </div>
 </div>

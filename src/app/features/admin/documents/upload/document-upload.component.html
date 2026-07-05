@@ -1,0 +1,142 @@
+<div class="container-fluid px-4">
+  <app-page-header title="Upload Document" subtitle="Add new documents to the system"></app-page-header>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header">
+          <h5 class="mb-0">Document Details</h5>
+        </div>
+        <div class="card-body">
+          <form #uploadForm="ngForm" (ngSubmit)="onUpload()">
+
+            <!-- File Upload -->
+            <div class="mb-4">
+              <h6 class="mb-3">Upload File</h6>
+              <div class="mb-3">
+                <label for="documentFile" class="form-label">Select File</label>
+                <input type="file" class="form-control" id="documentFile" (change)="onFileSelected($event)">
+              </div>
+            </div>
+
+            <!-- Document Information -->
+            <div class="mb-4">
+              <h6 class="mb-3">Document Information</h6>
+              <div class="mb-3">
+                <label for="documentName" class="form-label">Document Name</label>
+                <input type="text" class="form-control" id="documentName" [(ngModel)]="documentForm.name" name="documentName" [readonly]="!!documentForm.file">
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="documentType" class="form-label">Document Type</label>
+                  <select class="form-select" id="documentType" [(ngModel)]="documentForm.type" name="documentType">
+                    <option value="">Select Type</option>
+                    <option *ngFor="let type of types" [value]="type">{{type}}</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="documentCategory" class="form-label">Category</label>
+                  <select class="form-select" id="documentCategory" [(ngModel)]="documentForm.category" name="documentCategory">
+                    <option value="">Select Category</option>
+                    <option *ngFor="let category of categories" [value]="category">{{category}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="documentDescription" class="form-label">Description</label>
+                <textarea class="form-control" id="documentDescription" rows="3" [(ngModel)]="documentForm.description" name="documentDescription"></textarea>
+              </div>
+            </div>
+
+            <!-- Upload Progress -->
+            <div *ngIf="isUploading" class="mb-4">
+              <h6 class="mb-3">Upload Progress</h6>
+              <div class="progress">
+                <div class="progress-bar" role="progressbar" [style.width.%]="uploadProgress" [attr.aria-valuenow]="uploadProgress" aria-valuemin="0" aria-valuemax="100">
+                  {{uploadProgress}}%
+                </div>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button type="button" class="btn btn-outline-secondary" (click)="cancelUpload()" [disabled]="isUploading">
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary" [disabled]="isUploading || !documentForm.file">
+                <span *ngIf="isUploading" class="spinner-border spinner-border-sm me-2"></span>
+                Upload Document
+              </button>
+            </div>
+
+            <!-- Upload Success Message -->
+            <div class="alert alert-success mt-3" *ngIf="uploadSuccess">
+              Document uploaded successfully!
+            </div>
+
+            <!-- Upload Error Message -->
+            <div class="alert alert-danger mt-3" *ngIf="uploadError">
+              {{uploadError}}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Preview (optional) -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-header">
+          <h5 class="mb-0">Preview</h5>
+        </div>
+        <div class="card-body p-3">
+          <div class="text-center">
+            <div class="document-preview mb-4" *ngIf="documentForm.file">
+              <div class="document-icon mb-3">
+                <i class="bi bi-file-earmark {{ getDocumentIcon(documentForm.type) }} fs-1"></i>
+              </div>
+              <h6>{{ documentForm.name }}</h6>
+              <p class="text-muted mb-2">{{ documentForm.type }} • {{ documentForm.file.size ? (documentForm.file.size / 1024).toFixed(1) + ' KB' : 'Unknown size' }}</p>
+              <div class="mb-3">
+                <span class="badge bg-{{ getCategoryColor(documentForm.category) }} me-1">
+                  {{ documentForm.category }}
+                </span>
+                <span class="badge bg-{{ getTypeColor(documentForm.type) }} me-1">
+                  {{ documentForm.type }}
+                </span>
+              </div>
+              <p class="text-muted small">{{ documentForm.description || 'No description provided' }}</p>
+            </div>
+            <div class="text-muted" *ngIf="!documentForm.file">
+              No file selected for preview
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Document Preview Component (inline) -->
+<style>
+  .document-preview {
+    text-align: center;
+    padding: 2rem;
+    border: 1px dashed #dee2e6;
+    border-radius: 0.5rem;
+    background-color: #f8f9fa;
+  }
+  
+  .document-icon {
+    color: #0d6efd;
+  }
+  
+  /* Document type specific icons */
+  .bi-file-earmark.PDF { color: #dc3545; }
+  .bi-file-earmark.Word { color: #0d6efd; }
+  .bi-file-earmark.Excel { color: #28a745; }
+  .bi-file-earmark.PowerPoint { color: #ffc107; }
+  .bi-file-earmark.Image { color: #6f42c1; }
+  .bi-file-earmark.Video { color: #fd7e14; }
+  .bi-file-earmark.Other { color: #6c757d; }
+</style>

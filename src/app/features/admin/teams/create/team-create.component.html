@@ -1,0 +1,144 @@
+<div class="container-fluid px-4">
+  <!-- Page Header -->
+  <app-page-header title="Create Team" subtitle="Add a new team"></app-page-header>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header">
+          <h5 class="mb-0">Team Information</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="teamForm" (ngSubmit)="onSubmit()">
+            <!-- Team Details -->
+            <div class="mb-4">
+              <h6 class="mb-3">Team Details</h6>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="name" class="form-label">Team Name <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="name" formControlName="name">
+                  <div class="invalid-feedback" *ngIf="teamForm.get('name')?.touched && teamForm.get('name')?.invalid">
+                    Please enter team name.
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="description" class="form-label">Description</label>
+                  <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Targets -->
+            <div class="mb-4">
+              <h6 class="mb-3">Targets</h6>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="monthlyTarget" class="form-label">Monthly Target <span class="text-danger">*</span></label>
+                  <input type="number" class="form-control" id="monthlyTarget" formControlName="monthlyTarget" min="0">
+                  <div class="invalid-feedback" *ngIf="teamForm.get('monthlyTarget')?.touched && teamForm.get('monthlyTarget')?.invalid">
+                    Please enter a valid monthly target.
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="quarterlyTarget" class="form-label">Quarterly Target <span class="text-danger">*</span></label>
+                  <input type="number" class="form-control" id="quarterlyTarget" formControlName="quarterlyTarget" min="0">
+                  <div class="invalid-feedback" *ngIf="teamForm.get('quarterlyTarget')?.touched && teamForm.get('quarterlyTarget')?.invalid">
+                    Please enter a valid quarterly target.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Members -->
+            <div class="mb-4">
+              <h6 class="mb-3">Members</h6>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="memberCount" class="form-label">Number of Members <span class="text-danger">*</span></label>
+                  <input type="number" class="form-control" id="memberCount" formControlName="memberCount" min="1">
+                  <div class="invalid-feedback" *ngIf="teamForm.get('memberCount')?.touched && teamForm.get('memberCount')?.invalid">
+                    Please enter a valid number of members.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Settings -->
+            <div class="mb-4">
+              <h6 class="mb-3">Settings</h6>
+              <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="isActive" formControlName="isActive">
+                <label class="form-check-label" for="isActive">
+                  Active Team
+                </label>
+              </div>
+            </div>
+
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn btn-primary" [disabled]="teamForm.pending || isLoading">
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+                Create Team
+              </button>
+              <button type="button" class="btn btn-outline-secondary" routerLink="/admin/teams">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Preview (optional) -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-header">
+          <h5 class="mb-0">Preview</h5>
+        </div>
+        <div class="card-body p-3">
+          <div class="text-center">
+            <div class="team-avatar mb-3">
+              {{ (teamForm.get('name')?.value || 'T')[0] }}
+            </div>
+            <h6>{{ (teamForm.get('name')?.value || 'New Team') }}</h6>
+            <p class="text-muted mb-2">{{ (teamForm.get('description')?.value || 'No description') }}</p>
+            <div class="mb-3">
+              <div class="d-flex justify-content-between">
+                <span>Monthly Target:</span>
+                <span>{{ (teamForm.get('monthlyTarget')?.value || 0) }}</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span>Quarterly Target:</span>
+                <span>{{ (teamForm.get('quarterlyTarget')?.value || 0) }}</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span>Members:</span>
+                <span>{{ (teamForm.get('memberCount')?.value || 0) }}</span>
+              </div>
+              <div class="d-flex justify-content-between mt-2">
+                <span>Status:</span>
+                <span class="badge bg-{{ (teamForm.get('isActive')?.value ? 'success' : 'secondary') }}">{{ (teamForm.get('isActive')?.value ? 'Active' : 'Inactive') }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Team Avatar Component (inline) -->
+<style>
+  .team-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: #0d6efd;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin: 0 auto;
+  }
+</style>

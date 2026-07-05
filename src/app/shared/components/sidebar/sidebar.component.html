@@ -1,12 +1,41 @@
-<div class="sidebar">
-  <div class="logo">
-    <h2>MyBuddy</h2>
+<aside class="sidebar" [class.show]="!isSidebarCollapsed">
+  <div class="sidebar-header p-3">
+    <h4 class="mb-0">MyBuddy</h4>
   </div>
-  <nav class="nav-menu">
-    <a routerLink="/dashboard" routerLinkActive="active">Home</a>
-    <a routerLink="/saved" routerLinkActive="active">Saved Forms</a>
-    @if (isAdmin) {
-      <a routerLink="/admin" routerLinkActive="active">Admin</a>
-    }
-  </nav>
-</div>
+
+  <div class="sidebar-menu p-3">
+    <div *ngIf="isLoggedIn">
+      <ng-container *ngIf="role === 'admin'; else userMenu">
+        <div class="mb-3">
+          <h6 class="sidebar-heading text-muted">Admin Menu</h6>
+          <nav class="nav flex-column">
+            <a *ngFor="let item of adminMenuItems"
+               class="nav-link" [routerLink]="item.route"
+               routerLinkActive="active">
+              <i class="{{item.icon}} me-2"></i>
+              <span>{{item.label}}</span>
+            </a>
+          </nav>
+        </div>
+      </ng-container>
+
+  <ng-template #userMenu>
+    <div class="mb-3">
+      <h6 class="sidebar-heading text-muted">User Menu</h6>
+      <nav class="nav flex-column">
+        <a *ngFor="let item of userMenuItems"
+           class="nav-link" [routerLink]="item.route"
+           routerLinkActive="active">
+          <i class="{{item.icon}} me-2"></i>
+          <span>{{item.label}}</span>
+        </a>
+      </nav>
+    </div>
+  </ng-template>
+    </div>
+
+    <div class="mt-auto p-3 border-top">
+      <button class="btn btn-outline-danger w-100" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</aside>

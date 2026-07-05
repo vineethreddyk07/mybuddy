@@ -1,0 +1,18 @@
+/* 404 Page Styles */
+
+.not-found-page {
+  min-height: 100vh;
+  background-color: var(--mb-light);
+}
+
+.not-found-icon {
+  color: var(--mb-warning);
+}
+
+.not-found-title {
+  color: var(--mb-gray-900);
+}
+
+.not-found-desc {
+  font-size: 1.1rem;
+}

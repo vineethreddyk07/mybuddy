@@ -1,0 +1,102 @@
+<div class="container-fluid px-4">
+  <!-- Page Header -->
+  <app-page-header title="Teams" subtitle="Manage teams and their performance"></app-page-header>
+
+  <!-- Search and Filters -->
+  <div class="row mb-4">
+    <div class="col-md-4 mb-3">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search teams..." [(ngModel)]="searchTerm" (ngModelChange)="onSearch()">
+        <button class="btn btn-outline-secondary" type="button" (click)="onSearch()">
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+    </div>
+    <div class="col-md-2 mb-3">
+      <select class="form-select" [(ngModel)]="selectedStatus" (ngModelChange)="onFilter()">
+        <option value="">All Status</option>
+        <option *ngFor="let status of statuses">{{status}}</option>
+      </select>
+    </div>
+    <div class="col-md-2 d-grid mb-3">
+      <button class="btn btn-primary" type="button" routerLink="/admin/teams/create">
+        <i class="bi bi-plus me-1"></i> New Team
+      </button>
+    </div>
+  </div>
+
+  <!-- Teams Table -->
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <h5 class="mb-0">Team List</h5>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Team Name</th>
+              <th>Members</th>
+              <th>Target</th>
+              <th>Completed</th>
+              <th>Progress</th>
+              <th>Status</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let team of paginatedTeams">
+              <td>{{team.name}}</td>
+              <td>{{team.members}}</td>
+              <td>{{team.target}}</td>
+              <td>{{team.completed}}</td>
+              <td>
+                <div class="progress" style="height: 1rem;">
+                  <div class="progress-bar bg-success" role="progressbar" [style.width.%]="team.completed / team.target * 100" [attr.aria-valuenow]="team.completed" [attr.aria-valuemax]="team.target">
+                    {{roundProgress(team.completed / team.target * 100)}}%
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="badge bg-{{getStatusColor(team.status)}}">{{team.status}}</span>
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-primary" [routerLink]="['/admin/teams/edit', team.id]">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-danger" (click)="deleteTeam(team.id)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="paginatedTeams.length === 0">
+              <td colspan="7" class="text-center py-4">No teams found.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="d-flex justify-content-between align-items-center mt-3">
+    <p class="mb-0 text-muted">
+      Showing {{paginatedTeams.length}} of {{totalItems}} teams
+    </p>
+    <nav aria-label="Page navigation">
+      <ul class="pagination">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" href="#" (click)="onPageChange(currentPage - 1); $event.preventDefault()">Previous</a>
+        </li>
+        <li class="page-item" *ngFor="let p of paginate(); trackBy: trackByIndex" [class.active]="p === currentPage">
+          <a class="page-link" href="#" (click)="onPageChange(p); $event.preventDefault()">{{p}}</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" href="#" (click)="onPageChange(currentPage + 1); $event.preventDefault()">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

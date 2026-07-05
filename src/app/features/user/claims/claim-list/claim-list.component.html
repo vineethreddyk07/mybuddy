@@ -1,0 +1,115 @@
+<div class="container-fluid px-4">
+  <app-page-header title="Claims" subtitle="Manage your claims"></app-page-header>
+
+  <!-- Search and Filters -->
+  <div class="row mb-4">
+    <div class="col-md-3 mb-3">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search claims..." [(ngModel)]="searchTerm" (ngModelChange)="onSearch()">
+        <button class="btn btn-outline-secondary" type="button" (click)="onSearch()">
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+    </div>
+    <div class="col-md-2 mb-3">
+      <select class="form-select" [(ngModel)]="selectedStatus" (ngModelChange)="onFilter()">
+        <option value="">All Status</option>
+        <option *ngFor="let status of statuses">{{status}}</option>
+      </select>
+    </div>
+    <div class="col-md-2 mb-3">
+      <select class="form-select" [(ngModel)]="selectedPayer" (ngModelChange)="onFilter()">
+        <option value="">All Payers</option>
+        <option *ngFor="let payer of payers">{{payer}}</option>
+      </select>
+    </div>
+    <div class="col-md-2 mb-3">
+      <select class="form-select" [(ngModel)]="selectedScenario" (ngModelChange)="onFilter()">
+        <option value="">All Scenarios</option>
+        <option *ngFor="let scenario of scenarios">{{scenario}}</option>
+      </select>
+    </div>
+    <div class="col-md-2 mb-3">
+      <input type="date" class="form-control" placeholder="Start Date" [(ngModel)]="dateRangeStart" (ngModelChange)="onSearch()">
+    </div>
+    <div class="col-md-2 mb-3">
+      <input type="date" class="form-control" placeholder="End Date" [(ngModel)]="dateRangeEnd" (ngModelChange)="onSearch()">
+    </div>
+    <div class="col-md-2 d-grid mb-3">
+      <button class="btn btn-primary" type="button" routerLink="/user/claims/create">
+        <i class="bi bi-plus me-1"></i> New Claim
+      </button>
+    </div>
+  </div>
+
+  <!-- Claims Table -->
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <h5 class="mb-0">Claim List</h5>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Claim ID</th>
+              <th>Patient Name</th>
+              <th>Payer</th>
+              <th>Scenario</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Amount</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let claim of paginatedClaims">
+              <td>{{claim.claimId}}</td>
+              <td>{{claim.patientName}}</td>
+              <td>{{claim.payer}}</td>
+              <td>{{claim.scenario}}</td>
+              <td>
+                <span class="badge bg-{{getStatusColor(claim.status)}}">{{claim.status}}</span>
+              </td>
+              <td>{{claim.date}}</td>
+              <td>{{claim.amount}}</td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-primary" [routerLink]="['/user/claims', claim.id]">
+                    <i class="bi bi-eye"></i> View
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-danger" (click)="deleteClaim(claim.id)">
+                    <i class="bi bi-trash"></i> Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="paginatedClaims.length === 0">
+              <td colspan="8" class="text-center py-4">No claims found.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="d-flex justify-content-between align-items-center mt-3">
+    <p class="mb-0 text-muted">
+      Showing {{paginatedClaims.length}} of {{totalItems}} claims
+    </p>
+    <nav aria-label="Page navigation">
+      <ul class="pagination">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" href="#" (click)="onPageChange(currentPage - 1); $event.preventDefault()">Previous</a>
+        </li>
+        <li class="page-item" *ngFor="let p of paginate(); trackBy: trackByIndex" [class.active]="p === currentPage">
+          <a class="page-link" href="#" (click)="onPageChange(p); $event.preventDefault()">{{p}}</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" href="#" (click)="onPageChange(currentPage + 1); $event.preventDefault()">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

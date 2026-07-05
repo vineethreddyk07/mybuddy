@@ -1,21 +1,28 @@
 import { Component } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, RouterModule } from '@angular/router';
-import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
-import { TopbarComponent } from './shared/components/topbar/topbar.component';
-import { AuthService } from './core/services/auth.service';
+import { RouterModule } from '@angular/router';
+import { AdminLayoutComponent } from './shared/layouts/admin-layout/admin-layout.component';
+import { UserLayoutComponent } from './shared/layouts/user-layout/user-layout.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterModule, SidebarComponent, TopbarComponent],
+  imports: [CommonModule, RouterModule, AdminLayoutComponent, UserLayoutComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  isLoggedIn = false;
+  isAdminLayout = false;
+  isUserLayout = false;
 
-  constructor(private authService: AuthService) {
-    this.isLoggedIn = this.authService.isLoggedIn();
+  constructor(private router: Router) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        const currentUrl = this.router.url;
+        this.isAdminLayout = currentUrl.startsWith('/admin');
+        this.isUserLayout = currentUrl.startsWith('/user');
+      }
+    });
   }
 }

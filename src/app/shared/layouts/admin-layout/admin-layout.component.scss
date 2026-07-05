@@ -1,0 +1,17 @@
+/* Admin Layout Styles */
+
+.main-wrapper {
+  margin-left: var(--mb-sidebar-width);
+}
+
+.main-content {
+  min-height: calc(100vh - var(--mb-topbar-height));
+  background-color: var(--mb-light);
+  padding: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .main-wrapper {
+    margin-left: 0;
+  }
+}

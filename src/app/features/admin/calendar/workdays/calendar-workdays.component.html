@@ -1,0 +1,139 @@
+<div class="container-fluid px-4">
+  <!-- Page Header -->
+  <app-page-header title="Working Days" subtitle="Configure working days and holidays"></app-page-header>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">Working Day Configuration</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <h6 class="mb-3">Weekly Schedule</h6>
+              <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="monday" [(ngModel)]="workdayConfig.monday">
+                <label class="form-check-label" for="monday">Monday</label>
+              </div>
+              <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="tuesday" [(ngModel)]="workdayConfig.tuesday">
+                <label class="form-check-label" for="tuesday">Tuesday</label>
+              </div>
+              <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="wednesday" [(ngModel)]="workdayConfig.wednesday">
+                <label class="form-check-label" for="wednesday">Wednesday</label>
+              </div>
+              <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="thursday" [(ngModel)]="workdayConfig.thursday">
+                <label class="form-check-label" for="thursday">Thursday</label>
+              </div>
+              <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="friday" [(ngModel)]="workdayConfig.friday">
+                <label class="form-check-label" for="friday">Friday</label>
+              </div>
+              <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="saturday" [(ngModel)]="workdayConfig.saturday">
+                <label class="form-check-label" for="saturday">Saturday</label>
+              </div>
+              <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="sunday" [(ngModel)]="workdayConfig.sunday">
+                <label class="form-check-label" for="sunday">Sunday</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h6 class="mb-3">Special Settings</h6>
+              <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="holidaysAreWorkdays" [(ngModel)]="workdayConfig.holidaysAreWorkdays">
+                <label class="form-check-label" for="holidaysAreWorkdays">Treat holidays as working days</label>
+              </div>
+              <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="weekendDaysAreWorkdays" [(ngModel)]="workdayConfig.weekendDaysAreWorkdays">
+                <label class="form-check-label" for="weekendDaysAreWorkdays">Treat weekend days as working days</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">Custom Workdays</h5>
+        </div>
+        <div class="card-body">
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
+            <button class="btn btn-outline-primary" type="button" (click)="addCustomWorkday()">
+              <i class="bi bi-plus me-1"></i> Add Custom Workday
+            </button>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Is Workday</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let workday of customWorkdays">
+                  <td>{{workday.date}}</td>
+                  <td>{{workday.description}}</td>
+                  <td>
+                    <span class="badge bg-{{workday.isWorkday ? 'success' : 'danger'}}">
+                      {{workday.isWorkday ? 'Yes' : 'No'}}
+                    </span>
+                  </td>
+                  <td class="text-end">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-sm btn-outline-primary" [routerLink]="['/admin/calendar/workdays/edit', workday.id]">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button type="button" class="btn btn-sm btn-outline-danger" (click)="deleteCustomWorkday(workday.id)">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="customWorkdays.length === 0">
+                  <td colspan="4" class="text-center py-4">No custom workdays found.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Preview (optional) -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-header">
+          <h5 class="mb-0">Preview</h5>
+        </div>
+        <div class="card-body p-3">
+          <div class="text-center">
+            <h6>Working Day Summary</h6>
+            <div class="mb-3">
+              <p class="mb-1"><strong>Weekly Schedule:</strong></p>
+              <div class="d-flex flex-wrap gap-2">
+                <span class="badge bg-{{workdayConfig.monday ? 'success' : 'secondary'}}">Mon</span>
+                <span class="badge bg-{{workdayConfig.tuesday ? 'success' : 'secondary'}}">Tue</span>
+                <span class="badge bg-{{workdayConfig.wednesday ? 'success' : 'secondary'}}">Wed</span>
+                <span class="badge bg-{{workdayConfig.thursday ? 'success' : 'secondary'}}">Thu</span>
+                <span class="badge bg-{{workdayConfig.friday ? 'success' : 'secondary'}}">Fri</span>
+                <span class="badge bg-{{workdayConfig.saturday ? 'success' : 'secondary'}}">Sat</span>
+                <span class="badge bg-{{workdayConfig.sunday ? 'success' : 'secondary'}}">Sun</span>
+              </div>
+            </div>
+            <div class="mb-3">
+              <p class="mb-1"><strong>Special Settings:</strong></p>
+              <div>
+                <span class="badge bg-{{workdayConfig.holidaysAreWorkdays ? 'info' : 'light'}} text-dark">
+                  Holidays as Workdays: {{workdayConfig.holidaysAreWorkdays ? 'Yes' : 'No'}}
+                </span>
+                <span class="badge bg-{{workdayConfig.weekendDaysAreWorkdays ? 'info' : 'light'}} text-dark ms-2">
+                  Weekend Days as Workdays: {{workdayConfig.weekendDaysAreWorkdays ? 'Yes' : 'No'}}
+                </span>
+              </div>

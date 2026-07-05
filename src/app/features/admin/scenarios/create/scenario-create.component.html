@@ -1,0 +1,118 @@
+<div class="container-fluid px-4">
+  <app-page-header title="Create Scenario" subtitle="Add a new claim scenario"></app-page-header>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header">
+          <h5 class="mb-0">Scenario Details</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="scenarioForm" (ngSubmit)="onSubmit()">
+
+            <!-- Basic Information -->
+            <div class="mb-4">
+              <h6 class="mb-3">Basic Information</h6>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="name" class="form-label">Scenario Name</label>
+                  <input type="text" class="form-control" id="name" formControlName="name">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="code" class="form-label">Scenario Code</label>
+                  <input type="text" class="form-control" id="code" formControlName="code">
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="type" class="form-label">Type</label>
+                <select class="form-select" id="type" formControlName="type">
+                  <option value="">Select Type</option>
+                  <option value="Medical">Medical</option>
+                  <option value="Dental">Dental</option>
+                  <option value="Vision">Vision</option>
+                  <option value="Workers Comp">Workers Comp</option>
+                  <option value="Liability">Liability</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+              </div>
+            </div>
+
+            <!-- Configuration -->
+            <div class="mb-4">
+              <h6 class="mb-3">Configuration</h6>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="sectionCount" class="form-label">Number of Sections</label>
+                  <input type="number" class="form-control" id="sectionCount" formControlName="sectionCount" min="1">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div class="form-check mt-4">
+                    <input type="checkbox" class="form-check-input" id="isActive" formControlName="isActive">
+                    <label class="form-check-label" for="isActive">Active</label>
+                  </div>
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="isDefault" formControlName="isDefault">
+                    <label class="form-check-label" for="isDefault">Set as Default</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button type="button" class="btn btn-outline-secondary" routerLink="/admin/scenarios">
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary" [disabled]="scenarioForm.pending || isLoading">
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+                Save Scenario
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Preview (optional) -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-header">
+          <h5 class="mb-0">Preview</h5>
+        </div>
+        <div class="card-body p-3">
+          <div class="text-center">
+            <div class="scenario-avatar mb-3" *ngIf="scenarioForm.get('name')?.value">
+              {{ (scenarioForm.get('name')?.value || 'S')[0] | uppercase }}
+            </div>
+            <div *ngIf="!scenarioForm.get('name')?.value" class="scenario-avatar mb-3">
+              S
+            </div>
+            <small class="text-muted">
+              Description: {{ (scenarioForm.get('description')?.value || 'No description') }}<br>
+              Sections: {{ (scenarioForm.get('sectionCount')?.value || 0) }}
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scenario Avatar Component (inline) -->
+<style>
+  .scenario-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: #0d6efd;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin: 0 auto;
+  }
+</style>

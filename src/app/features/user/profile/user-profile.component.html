@@ -1,0 +1,99 @@
+<div class="container-fluid px-4">
+  <app-page-header title="My Profile" subtitle="Manage your account settings and preferences"></app-page-header>
+
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">Security Settings</h5>
+        </div>
+        <div class="card-body">
+          <form #securityForm="ngForm" (ngSubmit)="onSecuritySave()">
+            <div class="mb-3">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <h6 class="mb-0">Multi-Factor Authentication</h6>
+                  <small class="text-muted">Last login: {{security.lastLogin}} | Total logins: {{security.loginCount}}</small>
+                </div>
+                <span class="badge" [class.bg-success]="security.mfaEnabled" [class.bg-secondary]="!security.mfaEnabled">
+                  {{security.mfaEnabled ? 'Enabled' : 'Disabled'}}
+                </span>
+              </div>
+            </div>
+            <div class="mb-3 form-text">
+              <small>When enabled, you'll need to verify your identity with a second factor when signing in from a new device.</small>
+            </div>
+            <div class="d-grid mt-3">
+              <button type="button" class="btn btn-outline-primary" (click)="toggleMFA()">
+                {{ security.mfaEnabled ? 'Disable' : 'Enable' }} MFA
+              </button>
+              <button type="submit" class="btn btn-primary">Save Security Settings</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header">
+          <h5 class="mb-0">Notifications</h5>
+        </div>
+        <div class="card-body">
+          <form #notificationsForm="ngForm" (ngSubmit)="onNotificationsSave()">
+            <div class="mb-3">
+              <h6>Email Notifications</h6>
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="emailNotifications" [(ngModel)]="security.notifications.email" name="emailNotifications">
+                <label class="form-check-label" for="emailNotifications">
+                  Notify me by email for important updates
+                </label>
+              </div>
+            </div>
+            <div class="mb-3">
+              <h6>SMS Notifications</h6>
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="smsNotifications" [(ngModel)]="security.notifications.sms" name="smsNotifications">
+                <label class="form-check-label" for="smsNotifications">
+                  Notify me by SMS for urgent alerts
+                </label>
+              </div>
+            </div>
+            <div class="mb-3">
+              <h6>Push Notifications</h6>
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="pushNotifications" [(ngModel)]="security.notifications.push" name="pushNotifications">
+                <label class="form-check-label" for="pushNotifications">
+                  Notify me via browser push notifications
+                </label>
+              </div>
+            </div>
+            <div class="mb-4">
+              <h6>Recent Notifications</h6>
+              <div class="list-group">
+                <div *ngFor="let notif of notifications" class="list-group-item">
+                  <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{notif.message}}</h5>
+                    <small class="text-muted">{{notif.time}}</small>
+                  </div>
+                  <div *ngIf="notif.read; else unreadTemplate">
+                    <span class="text-muted">Read</span>
+                  </div>
+                  <ng-template #unreadTemplate>
+                    <span class="text-danger">Unread</span>
+                  </ng-template>
+                </div>
+                <div *ngIf="notifications.length === 0" class="list-group-item">
+                  No notifications
+                </div>
+              </div>
+            </div>
+            <div class="d-grid mt-3">
+              <button type="submit" class="btn btn-primary">Save Notification Preferences</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

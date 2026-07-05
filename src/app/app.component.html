@@ -1,13 +1,5 @@
-@if (isLoggedIn) {
-  <div class="app-container">
-    <app-sidebar></app-sidebar>
-    <div class="main-content">
-      <app-topbar></app-topbar>
-      <main class="content-area">
-        <router-outlet></router-outlet>
-      </main>
-    </div>
-  </div>
-} @else {
-  <router-outlet></router-outlet>
-}
+<div class="d-flex h-100">
+  <app-admin-layout *ngIf="isAdminLayout"></app-admin-layout>
+  <app-user-layout *ngIf="isUserLayout"></app-user-layout>
+  <router-outlet *ngIf="!isAdminLayout && !isUserLayout"></router-outlet>
+</div>

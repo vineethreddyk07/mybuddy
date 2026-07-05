@@ -1,0 +1,204 @@
+<div class="container-fluid px-4">
+  <app-page-header title="Create Claim" subtitle="Submit a new claim"></app-page-header>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header">
+          <h5 class="mb-0">Claim Details</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="claimForm" (ngSubmit)="onSubmit()">
+
+            <!-- Basic Info Section -->
+            <div class="mb-4">
+              <h6 class="mb-3">Basic Information</h6>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="patientName" class="form-label">Patient Name</label>
+                  <input type="text" class="form-control" id="patientName" formControlName="patientName">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="claimId" class="form-label">Claim ID</label>
+                  <input type="text" class="form-control" id="claimId" formControlName="claimId">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="payer" class="form-label">Payer</label>
+                  <select class="form-select" id="payer" formControlName="payer">
+                    <option value="">Select Payer</option>
+                    <option *ngFor="let payer of payerOptions" [value]="payer">{{payer}}</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="callDate" class="form-label">Call Date</label>
+                  <input type="date" class="form-control" id="callDate" formControlName="callDate">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="dos" class="form-label">Date of Service</label>
+                  <input type="date" class="form-control" id="dos" formControlName="dos">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="billedAmount" class="form-label">Billed Amount</label>
+                  <input type="number" class="form-control" id="billedAmount" formControlName="billedAmount" min="0" step="0.01">
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="previousHistory" class="form-label">Previous History</label>
+                <textarea class="form-control" id="previousHistory" rows="2" formControlName="previousHistory"></textarea>
+              </div>
+            </div>
+
+            <!-- On-Process Section -->
+            <div class="mb-4">
+              <h6 class="mb-3">On Process</h6>
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label for="repName" class="form-label">Rep Name</label>
+                  <input type="text" class="form-control" id="repName" formControlName="repName">
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="callRefNumber" class="form-label">Call Ref Number</label>
+                  <input type="text" class="form-control" id="callRefNumber" formControlName="callRefNumber">
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="status" class="form-label">Status</label>
+                  <select class="form-select" id="status" formControlName="status">
+                    <option value="">Select Status</option>
+                    <option *ngFor="let status of claimStatuses" [value]="status">{{status}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Paid Section -->
+            <div class="mb-4">
+              <h6 class="mb-3">Paid</h6>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="receiveDate" class="form-label">Receive Date</label>
+                  <input type="date" class="form-control" id="receiveDate" formControlName="receiveDate">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="processDate" class="form-label">Process Date</label>
+                  <input type="date" class="form-control" id="processDate" formControlName="processDate">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="paidAmount" class="form-label">Paid Amount</label>
+                  <input type="number" class="form-control" id="paidAmount" formControlName="paidAmount" min="0" step="0.01">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="allowedAmount" class="form-label">Allowed Amount</label>
+                  <input type="number" class="form-control" id="allowedAmount" formControlName="allowedAmount" min="0" step="0.01">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="paymentDate" class="form-label">Payment Date</label>
+                  <input type="date" class="form-control" id="paymentDate" formControlName="paymentDate">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="paymentReference" class="form-label">Payment Reference</label>
+                  <input type="text" class="form-control" id="paymentReference" formControlName="paymentReference">
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="patientResponsibility" class="form-label">Patient Responsibility</label>
+                <input type="number" class="form-control" id="patientResponsibility" formControlName="patientResponsibility" min="0" step="0.01">
+              </div>
+            </div>
+
+            <!-- Denied Section -->
+            <div class="mb-4">
+              <h6 class="mb-3">Denied</h6>
+              <div class="mb-3">
+                <label for="denialReason" class="form-label">Denial Reason</label>
+                <select class="form-select" id="denialReason" formControlName="denialReason">
+                  <option value="">Select Denial Reason</option>
+                  <option *ngFor="let reason of denialReasons" [value]="reason">{{reason}}</option>
+                </select>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="appealAllowed" class="form-label">Appeal Allowed</label>
+                  <select class="form-select" id="appealAllowed" formControlName="appealAllowed">
+                    <option value="">Select Appeal Status</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="referenceNumber" class="form-label">Reference Number</label>
+                  <input type="text" class="form-control" id="referenceNumber" formControlName="referenceNumber">
+                </div>
+              </div>
+            </div>
+
+            <!-- Partial Section -->
+            <div class="mb-4">
+              <h6 class="mb-3">Partial</h6>
+              <div class="mb-3">
+                <label for="remainingAmount" class="form-label">Remaining Amount</label>
+                <input type="number" class="form-control" id="remainingAmount" formControlName="remainingAmount" min="0" step="0.01">
+              </div>
+            </div>
+
+            <!-- Notes Section -->
+            <div class="mb-4">
+              <h6 class="mb-3">Notes</h6>
+              <div class="mb-3">
+                <label for="notes" class="form-label">Notes</label>
+                <textarea class="form-control" id="notes" rows="5" formControlName="notes"></textarea>
+              </div>
+            </div>
+
+            <!-- Instructions Section -->
+            <div class="mb-4">
+              <h6 class="mb-3">Instructions</h6>
+              <div class="mb-3">
+                <ol>
+                  <li *ngFor="let instruction of getInstructions()">{{instruction}}</li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn btn-primary" [disabled]="claimForm.pending || isLoading">
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+                Submit Claim
+              </button>
+              <button type="button" class="btn btn-outline-secondary" routerLink="/user/claims">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Preview -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-header">
+          <h5 class="mb-0">Preview</h5>
+        </div>
+        <div class="card-body p-3">
+          <div class="text-center">
+            <h6>Claim Preview</h6>
+            <div class="mb-3">
+              <p class="mb-1"><strong>Patient:</strong> {{ claimForm.get('patientName')?.value || 'Not provided' }}</p>
+              <p class="mb-1"><strong>Claim ID:</strong> {{ claimForm.get('claimId')?.value || 'Not provided' }}</p>
+              <p class="mb-1"><strong>Payer:</strong> {{ claimForm.get('payer')?.value || 'Not selected' }}</p>
+              <p class="mb-1"><strong>Status:</strong> <span class="badge" [class.bg-success]="claimForm.get('status')?.value === 'Paid'" [class.bg-warning]="claimForm.get('status')?.value === 'Denied'" [class.bg-info]="claimForm.get('status')?.value === 'Partial'">{{ claimForm.get('status')?.value || 'Not selected' }}</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,24 +1,236 @@
-* {
-  margin: 0;
-  padding: 0;
+@import "bootstrap/scss/bootstrap";
+
+/* ========================================
+   MyBuddy - Professional Design System
+   ======================================== */
+
+:root {
+  /* Brand Colors */
+  --mb-primary: #4f46e5;
+  --mb-primary-hover: #4338ca;
+  --mb-primary-light: #eef2ff;
+  --mb-secondary: #64748b;
+  --mb-secondary-hover: #475569;
+  --mb-secondary-light: #f1f5f9;
+  --mb-success: #10b981;
+  --mb-success-light: #ecfdf5;
+  --mb-danger: #ef4444;
+  --mb-danger-light: #fef2f2;
+  --mb-warning: #f59e0b;
+  --mb-warning-light: #fffbeb;
+  --mb-info: #3b82f6;
+  --mb-info-light: #eff6ff;
+
+  /* Neutrals */
+  --mb-white: #ffffff;
+  --mb-light: #f8fafc;
+  --mb-gray-50: #f9fafb;
+  --mb-gray-100: #f3f4f6;
+  --mb-gray-200: #e5e7eb;
+  --mb-gray-300: #d1d5db;
+  --mb-gray-400: #9ca3af;
+  --mb-gray-500: #6b7280;
+  --mb-gray-600: #4b5563;
+  --mb-gray-700: #374151;
+  --mb-gray-800: #1f2937;
+  --mb-gray-900: #111827;
+  --mb-dark: #0f172a;
+
+  /* Layout */
+  --mb-sidebar-width: 260px;
+  --mb-sidebar-collapsed-width: 0px;
+  --mb-topbar-height: 64px;
+  --mb-card-radius: 0.75rem;
+  --mb-btn-radius: 0.5rem;
+
+  /* Shadows */
+  --mb-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --mb-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --mb-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --mb-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* Transitions */
+  --mb-transition: 0.2s ease-in-out;
+  --mb-transition-slow: 0.3s ease-in-out;
+}
+
+/* ========================================
+   Reset & Base
+   ======================================== */
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f5f5f5;
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--mb-gray-800);
+  background-color: var(--mb-light);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: var(--mb-gray-900);
+  line-height: 1.3;
 }
 
 a {
+  color: var(--mb-primary);
   text-decoration: none;
-  color: inherit;
+  transition: var(--mb-transition);
 }
 
-button {
-  cursor: pointer;
-  border: none;
+a:hover {
+  color: var(--mb-primary-hover);
 }
 
-input, select, textarea {
-  font-family: inherit;
+/* ========================================
+   Focus & Accessibility
+   ======================================== */
+:focus-visible {
+  outline: 2px solid var(--mb-primary);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/* ========================================
+   App Shell
+   ======================================== */
+app-root {
+  display: block;
+  min-height: 100vh;
+}
+
+/* ========================================
+   Cards
+   ======================================== */
+.card {
+  border: 1px solid var(--mb-gray-200);
+  border-radius: var(--mb-card-radius);
+  box-shadow: var(--mb-shadow-sm);
+  transition: var(--mb-transition);
+}
+
+.card:hover {
+  box-shadow: var(--mb-shadow);
+}
+
+.card-header {
+  background-color: var(--mb-white);
+  border-bottom: 1px solid var(--mb-gray-200);
+  font-weight: 600;
+  padding: 1rem 1.25rem;
+}
+
+.card-body {
+  padding: 1.25rem;
+}
+
+/* ========================================
+   Buttons
+   ======================================== */
+.btn {
+  border-radius: var(--mb-btn-radius);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  transition: var(--mb-transition);
+}
+
+.btn-primary {
+  background-color: var(--mb-primary);
+  border-color: var(--mb-primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--mb-primary-hover);
+  border-color: var(--mb-primary-hover);
+}
+
+/* ========================================
+   Forms
+   ======================================== */
+.form-control, .form-select {
+  border-radius: var(--mb-btn-radius);
+  border: 1px solid var(--mb-gray-300);
+  padding: 0.5rem 0.75rem;
+  transition: var(--mb-transition);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--mb-primary);
+  box-shadow: 0 0 0 3px var(--mb-primary-light);
+}
+
+/* ========================================
+   Tables
+   ======================================== */
+.table {
+  margin-bottom: 0;
+}
+
+.table thead th {
+  background-color: var(--mb-gray-50);
+  border-bottom: 2px solid var(--mb-gray-200);
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--mb-gray-600);
+  padding: 0.75rem 1rem;
+}
+
+.table tbody td {
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+  background-color: var(--mb-gray-50);
+}
+
+/* ========================================
+   Badges
+   ======================================== */
+.badge {
+  font-weight: 500;
+  padding: 0.35em 0.65em;
+  border-radius: 0.35rem;
+}
+
+/* ========================================
+   Utilities
+   ======================================== */
+.shadow-sm-custom {
+  box-shadow: var(--mb-shadow-sm);
+}
+
+.rounded-custom {
+  border-radius: var(--mb-card-radius);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-out;
 }
